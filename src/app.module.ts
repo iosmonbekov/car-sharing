@@ -4,6 +4,8 @@ import { TariffsModule } from './tariffs/tariffs.module';
 import { TariffsEntity } from "./tariffs/tariffs.entity";
 import { DiscountsModule } from './discounts/discounts.module';
 import { DiscountEntity } from "./discounts/discount.entity";
+import { CarsModule } from './cars/cars.module';
+import { CarEntity } from "./cars/car.entity";
 
 @Module({
   imports: [
@@ -14,11 +16,12 @@ import { DiscountEntity } from "./discounts/discount.entity";
       username: 'postgres',
       password: 'root',
       database: 'car-sharing',
-      entities: [TariffsEntity, DiscountEntity],
+      entities: [TariffsEntity, DiscountEntity, CarEntity],
       synchronize: true,
     }),
     TariffsModule,
-    DiscountsModule
+    DiscountsModule,
+    CarsModule
   ],
   controllers: [],
   providers: [],

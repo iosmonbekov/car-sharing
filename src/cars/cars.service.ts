@@ -1,0 +1,20 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
+import { CarEntity } from "./car.entity";
+import { Repository } from "typeorm";
+import CarDto from "./dto/car.dto";
+
+@Injectable()
+export class CarsService {
+  constructor(@InjectRepository(CarEntity) private carRepository: Repository<CarEntity>) {
+  }
+
+  getAllCars():Promise<CarEntity[]> {
+    return this.carRepository.find();
+  }
+
+  createCar(carDto: CarDto):Promise<CarEntity> {
+    const car = this.carRepository.create(carDto);
+    return this.carRepository.save(car);
+  }
+}
