@@ -9,15 +9,17 @@ export class UsersService {
   constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) {
   }
 
-  createUser(userDto: UserDto):Promise<UserEntity> {
+  async getAllUsers():Promise<UserEntity[]> {
+    return this.userRepository.find();
+  }
+
+  async createUser(userDto: UserDto):Promise<UserEntity> {
     const user = this.userRepository.create(userDto);
     return this.userRepository.save(user);
   }
 
-
   async findUserByEmail(email: string):Promise<UserEntity> {
-    const user = this.userRepository.findOne({email});
-    console.log(user);
+    const user = await this.userRepository.findOne({email});
     return user;
   }
 }
