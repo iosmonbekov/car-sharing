@@ -17,4 +17,9 @@ export class DiscountsService {
     const discount = this.discountRepository.create(discountDto);
     return this.discountRepository.save(discount);
   }
+
+  async getDiscountByPeriod(period: number) {
+    const discounts = await this.discountRepository.query(`SELECT * FROM "Discounts" WHERE "Discounts".from <= ${period} AND "Discounts".to >= ${period}`);
+    return discounts[0];
+  }
 }

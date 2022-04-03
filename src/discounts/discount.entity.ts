@@ -9,8 +9,8 @@ export class DiscountEntity {
   discount: number;
 
   @Column()
-  dayFrom: number;
+  from: number;
 
   @Column()
-  dayTo: number;
+  to: number;
 }

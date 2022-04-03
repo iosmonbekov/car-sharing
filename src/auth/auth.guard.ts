@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     try {
       const candidate = JSON.parse(request.headers.authorization);
       const user = await this.authService.validateUser(candidate.email, candidate.password);
-
+      request.user = user;
       return Boolean(user);
     } catch (e) {
       throw new UnauthorizedException();

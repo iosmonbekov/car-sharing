@@ -7,6 +7,7 @@ import { CarEntity } from "./car.entity";
 @Module({
   imports: [TypeOrmModule.forFeature([CarEntity])],
   providers: [CarsService],
-  controllers: [CarsController]
+  controllers: [CarsController],
+  exports: [CarsService]
 })
 export class CarsModule {}

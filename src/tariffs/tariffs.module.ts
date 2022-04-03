@@ -8,5 +8,6 @@ import { TariffsEntity } from "./tariffs.entity";
   imports: [TypeOrmModule.forFeature([TariffsEntity])],
   providers: [TariffsService],
   controllers: [TariffsController],
+  exports: [TariffsService]
 })
 export class TariffsModule {}
