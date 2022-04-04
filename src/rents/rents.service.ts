@@ -8,6 +8,7 @@ import { TariffsService } from "../tariffs/tariffs.service";
 import { CarsService } from "../cars/cars.service";
 import { DiscountsService } from "../discounts/discounts.service";
 import { DiscountEntity } from "../discounts/discount.entity";
+import RentValidator from "./rent.validator";
 
 @Injectable()
 export class RentsService {
@@ -16,20 +17,26 @@ export class RentsService {
     private usersService: UsersService,
     private tariffsService: TariffsService,
     private carsService: CarsService,
-    private discountsService: DiscountsService
+    private discountsService: DiscountsService,
+    private rentValidator: RentValidator
   ) {}
 
   async createRent(rentDto: RentDto):Promise<any> {
-    const period = this.getPeriod(rentDto.from, rentDto.to);
-    const discount = await this.getRentDiscount(period);
-    const car = await this.carsService.getCarById(rentDto.carId);
-    const tariff = await this.tariffsService.getTariffById(rentDto.tariffId);
-    const user = await this.usersService.getUserById(rentDto.userId);
+    try {
+      const period = this.getPeriod(rentDto.from, rentDto.to);
+      this.rentValidator.rentCreateValidator(rentDto.from, rentDto.to, period);
+      const discount = await this.getRentDiscount(period);
+      const car = await this.carsService.getCarById(rentDto.carId);
+      const tariff = await this.tariffsService.getTariffById(rentDto.tariffId);
+      const user = await this.usersService.getUserById(rentDto.userId);
 
-    const payment = this.calculatePayment(period, tariff.price, discount?.discount);
+      const payment = this.calculatePayment(period, tariff.price, discount?.discount);
 
-    const rent = this.rentsRepository.create({...rentDto, discount, car, tariff, user, payment})
-    return this.rentsRepository.save(rent);
+      const rent = this.rentsRepository.create({...rentDto, discount, car, tariff, user, payment})
+      return this.rentsRepository.save(rent);
+    } catch (error) {
+      throw error;
+    }
   }
 
   private async getRentDiscount(period):Promise<DiscountEntity> {
@@ -48,7 +55,6 @@ export class RentsService {
     const payment = period * tariffPrice;
 
     if (!discount) return payment;
-
 
     return (payment * (100 - discount)) / 100;
   }

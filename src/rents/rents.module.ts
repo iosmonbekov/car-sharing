@@ -8,6 +8,7 @@ import { UsersModule } from "../users/users.module";
 import { CarsModule } from "../cars/cars.module";
 import { TariffsModule } from "../tariffs/tariffs.module";
 import { DiscountsModule } from "../discounts/discounts.module";
+import RentValidator from "./rent.validator";
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { DiscountsModule } from "../discounts/discounts.module";
     DiscountsModule
   ],
   controllers: [RentsController],
-  providers: [RentsService]
+  providers: [RentsService, RentValidator]
 })
 export class RentsModule {}

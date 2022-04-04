@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 import { UserEntity } from "../users/user.entity";
 import { CarEntity } from "../cars/car.entity";
 import { TariffsEntity } from "../tariffs/tariffs.entity";
@@ -25,15 +25,15 @@ export class RentsEntity {
   @JoinColumn()
   user: UserEntity;
 
-  @OneToOne(() => CarEntity)
+  @ManyToOne(() => CarEntity, car => car.rents)
   @JoinColumn()
   car: CarEntity;
 
-  @OneToOne(() => TariffsEntity)
+  @ManyToOne(() => TariffsEntity, tariff => tariff.rents)
   @JoinColumn()
   tariff: TariffsEntity;
 
-  @OneToOne(() => DiscountEntity)
+  @ManyToOne(() => DiscountEntity, discount => discount.rents)
   @JoinColumn()
   discount: DiscountEntity;
 }

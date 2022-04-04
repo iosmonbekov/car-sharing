@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { RentsEntity } from "../rents/rents.entity";
 
 
 @Entity({name: 'Tariffs'})
@@ -17,4 +18,7 @@ export class TariffsEntity {
 
   @Column()
   distance: number;
+
+  @OneToMany(() => RentsEntity, rents => rents.tariff)
+  rents: RentsEntity[];
 }
