@@ -18,7 +18,7 @@ export class RentsEntity {
   @Column({type: 'date'})
   to: Date;
 
-  @Column()
+  @Column({type: "float"})
   payment: number;
 
   @OneToOne(() => UserEntity)

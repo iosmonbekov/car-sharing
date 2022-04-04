@@ -17,4 +17,8 @@ export class CarsService {
     const car = this.carRepository.create(carDto);
     return this.carRepository.save(car);
   }
+
+  async getCarById(id: number):Promise<CarEntity> {
+    return this.carRepository.findOne({id});
+  }
 }

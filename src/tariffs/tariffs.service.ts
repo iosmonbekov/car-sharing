@@ -21,4 +21,8 @@ export class TariffsService {
       throw new HttpException('Something went wrong...', HttpStatus.BAD_REQUEST);
     }
   }
+
+  async getTariffById(id):Promise<TariffsEntity> {
+    return this.tariffsRepository.findOne({id});
+  }
 }

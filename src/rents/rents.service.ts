@@ -20,23 +20,36 @@ export class RentsService {
   ) {}
 
   async createRent(rentDto: RentDto):Promise<any> {
-    //const rent = this.rentsRepository.create(rentDto);
-    //return this.rentsRepository.save(rent);
-    const discount = await this.getRentDiscount(rentDto.from, rentDto.to);
-    return 'testing'
+    const period = this.getPeriod(rentDto.from, rentDto.to);
+    const discount = await this.getRentDiscount(period);
+    const car = await this.carsService.getCarById(rentDto.carId);
+    const tariff = await this.tariffsService.getTariffById(rentDto.tariffId);
+    const user = await this.usersService.getUserById(rentDto.userId);
+
+    const payment = this.calculatePayment(period, tariff.price, discount?.discount);
+
+    const rent = this.rentsRepository.create({...rentDto, discount, car, tariff, user, payment})
+    return this.rentsRepository.save(rent);
   }
 
-  private async getRentDiscount(from, to):Promise<DiscountEntity> {
-    const dateDifference = Number(new Date(to)) - Number(new Date(from));
-    const period = this.getDayFromMilliseconds(dateDifference);
-
+  private async getRentDiscount(period):Promise<DiscountEntity> {
     const discount = await this.discountsService.getDiscountByPeriod(period);
-    const car = await this.carsService;
-
-    return ;
+    return discount;
   }
 
-  private getDayFromMilliseconds(milliseconds):number {
-    return milliseconds / (1000 * 60 * 60 * 24);
+  private getPeriod(from, to): number {
+    const dateDifference = Number(new Date(to)) - Number(new Date(from));
+    const period = dateDifference / (1000 * 60 * 60 * 24);
+
+    return period;
+  }
+
+  private calculatePayment(period, tariffPrice, discount):number {
+    const payment = period * tariffPrice;
+
+    if (!discount) return payment;
+
+
+    return (payment * (100 - discount)) / 100;
   }
 }

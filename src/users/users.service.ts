@@ -22,4 +22,9 @@ export class UsersService {
     const user = await this.userRepository.findOne({email});
     return user;
   }
+
+  async getUserById(id: number):Promise<UserEntity> {
+    const user = await this.userRepository.findOne({id});
+    return user;
+  }
 }
