@@ -20,6 +20,7 @@ import RentValidator from "./rent.validator";
     DiscountsModule
   ],
   controllers: [RentsController],
-  providers: [RentsService, RentValidator]
+  providers: [RentsService, RentValidator],
+  exports: [RentsService]
 })
 export class RentsModule {}

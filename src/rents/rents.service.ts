@@ -39,6 +39,20 @@ export class RentsService {
     }
   }
 
+  async getRentsCountByUserId(userId: number) {
+    const [{ count }] = await this.rentsRepository.query(`
+        SELECT count(id) from "Rents" WHERE "userId" = ${userId} 
+    `);
+    return Number(count);
+  }
+
+  async getTotalPaymentByUserId(userId: number) {
+    const [{ sum }] = await this.rentsRepository.query(`
+      SELECT sum(payment) from "Rents" WHERE "userId" = ${userId}
+    `);
+    return Number(sum);
+  }
+
   private async getRentDiscount(period):Promise<DiscountEntity> {
     const discount = await this.discountsService.getDiscountByPeriod(period);
     return discount;
@@ -58,4 +72,6 @@ export class RentsService {
 
     return (payment * (100 - discount)) / 100;
   }
+
+
 }

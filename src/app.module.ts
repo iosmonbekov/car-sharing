@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { UserEntity } from "./users/user.entity";
 import { RentsModule } from './rents/rents.module';
 import { RentsEntity } from "./rents/rents.entity";
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { RentsEntity } from "./rents/rents.entity";
     CarsModule,
     AuthModule,
     UsersModule,
-    RentsModule
+    RentsModule,
+    StatisticsModule
   ],
   controllers: [],
   providers: [],

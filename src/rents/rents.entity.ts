@@ -21,19 +21,15 @@ export class RentsEntity {
   @Column({type: "float"})
   payment: number;
 
-  @OneToOne(() => UserEntity)
-  @JoinColumn()
+  @ManyToOne(() => UserEntity, user => user.rents)
   user: UserEntity;
 
   @ManyToOne(() => CarEntity, car => car.rents)
-  @JoinColumn()
   car: CarEntity;
 
   @ManyToOne(() => TariffsEntity, tariff => tariff.rents)
-  @JoinColumn()
   tariff: TariffsEntity;
 
   @ManyToOne(() => DiscountEntity, discount => discount.rents)
-  @JoinColumn()
   discount: DiscountEntity;
 }
